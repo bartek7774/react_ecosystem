@@ -18,3 +18,24 @@ export const toggleTodo = id => ({
   type: TOGGLE_TODO,
   payload: { id }
 });
+
+
+export const LOAD_TODOS_IN_PROGRESS = "LOAD_TODOS_IN_PROGRESS";
+
+export const loadTodosInProgress = id => ({
+  type: LOAD_TODOS_IN_PROGRESS
+});
+
+export const LOAD_TODOS_SUCCESS = "LOAD_TODOS_SUCCESS";
+
+export const loadTodosSuccess = todos => ({
+  type: LOAD_TODOS_SUCCESS,
+  payload: {todos}
+});
+
+export const LOAD_TODOS_ERROR = "LOAD_TODOS_ERROR";
+
+export const loadTodosError = error => ({
+  type: LOAD_TODOS_ERROR,
+  payload: {error}
+});

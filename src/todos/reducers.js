@@ -1,29 +1,57 @@
 import { v4 as uuidv4 } from "uuid";
-import { CREATE_TODO, REMOVE_TODO, TOGGLE_TODO } from "./actions";
-export const todos = (state = [], action) => {
+import {
+  CREATE_TODO,
+  REMOVE_TODO,
+  TOGGLE_TODO,
+  LOAD_TODOS_IN_PROGRESS,
+  LOAD_TODOS_SUCCESS,
+  LOAD_TODOS_ERROR
+} from "./actions";
+
+const initialState = {
+  isLoading: false,
+  data: [],
+  error: null
+};
+
+export const todos = (state = initialState, action) => {
   const { type, payload } = action;
   console.log({ type, payload });
   switch (type) {
     case CREATE_TODO: {
       const { text } = payload;
       const id = uuidv4();
-      console.log({ id });
       const newTodo = {
         id,
         text,
         isCompleted: false
       };
-      return [...state, newTodo];
+      return { ...state, data: [...state.data, newTodo] };
     }
     case REMOVE_TODO: {
       const { id } = payload;
-      return state.filter(todo => todo.id !== id);
+      console.log("sss", id);
+      return { ...state, data: state.data.filter(todo => todo.id !== id) };
     }
     case TOGGLE_TODO: {
       const { id } = payload;
-      return state.map(todo =>
-        todo.id === id ? ({ ...todo, isCompleted: !todo.isCompleted }) : todo
-      );
+      return {
+        ...state,
+        data: state.data.map(todo =>
+          todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+        )
+      };
+    }
+    case LOAD_TODOS_IN_PROGRESS: {
+      return { ...state, isLoading: true };
+    }
+    case LOAD_TODOS_SUCCESS: {
+      const { todos } = payload;
+      return { ...state, isLoading: false, data: todos };
+    }
+    case LOAD_TODOS_ERROR: {
+      const { error } = payload;
+      return { ...state, isLoading: false, error };
     }
     default:
       return state;
