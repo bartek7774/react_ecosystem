@@ -3,9 +3,17 @@ import { connect } from "react-redux";
 import TodoListItem from "./TodoListItem";
 import { toggleTodo } from "./actions";
 import { loadTodos, deleteTodo } from "./thunks";
+import {
+  isLoadingTodos,
+  errorTodos,
+  getTodos,
+  getCompletedTodos,
+  getIncompleteTodos
+} from "./selectors";
 
 const TodoList = ({
-  todos = [],
+  incompletedTodos=[],
+  completedTodos=[],
   onRemovePressed,
   onTogglePressed,
   onLoadTodos,
@@ -18,23 +26,38 @@ const TodoList = ({
   if (isLoading) return <p>.....</p>;
   if (error) return <p>error</p>;
   return (
-    <div className="list-wrapper">
-      {todos.map(todo => (
-        <TodoListItem
-          key={todo.id}
-          todo={todo}
-          onRemovePressed={onRemovePressed}
-          onTogglePressed={onTogglePressed}
-        />
-      ))}
+    <div className="list-container">
+      <div className="list-wrapper">
+        {incompletedTodos.map(todo => (
+          <TodoListItem
+            key={todo.id}
+            todo={todo}
+            onRemovePressed={onRemovePressed}
+            onTogglePressed={onTogglePressed}
+          />
+        ))}
+      </div>
+      <hr/>
+      <div className="list-wrapper">
+        {completedTodos.map(todo => (
+          <TodoListItem
+            key={todo.id}
+            todo={todo}
+            onRemovePressed={onRemovePressed}
+            onTogglePressed={onTogglePressed}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
 const mapStateToProps = state => ({
-  todos: state.todos.data,
-  isLoading: state.todos.isLoading,
-  error: state.todos.error
+  isLoading: isLoadingTodos(state),
+  todos: getTodos(state),
+  incompletedTodos: getIncompleteTodos(state),
+  completedTodos: getCompletedTodos(state),
+  error: errorTodos(state)
 });
 
 const mapDispatchToProps = dispatch => ({

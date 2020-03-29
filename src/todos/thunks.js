@@ -20,7 +20,7 @@ export const loadTodos = () => async (dispatch, getState) => {
           {
             id: 2,
             text: "2",
-            isCompleted: false
+            isCompleted: true
           }
         ])
       );
