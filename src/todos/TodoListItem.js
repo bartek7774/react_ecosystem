@@ -19,7 +19,8 @@ const FancyButton = styled(DefaultButton)`
 
 const BodyText = styled.p`
   color:${props => props.theme.colors.primary};
-  font-size: ${props => props.theme.fontSizes.sm}
+  font-size: ${props => props.theme.fontSizes.sm};
+  border:${props => /\s+/ig.test(props.text)?'1px solid red':'none'};
 `;
 
 const Link = styled.a`
@@ -37,7 +38,7 @@ const Icon = styled.div`
 
 const TodoListItem = ({ className, todo, onRemovePressed, onTogglePressed }) => (
   <div className={className}>
-    <BodyText as='h1' style={{textDecoration:todo.isCompleted?'line-through':''}}>{todo.text}</BodyText>
+    <BodyText as='h1' text={todo.text} style={{textDecoration:todo.isCompleted?'line-through':''}}>{todo.text}</BodyText>
     <Link>{todo.id}    <Icon/></Link>
     <div className="buttons-container">
         <DefaultButton isCompleted={todo.isCompleted}
