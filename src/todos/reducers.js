@@ -19,10 +19,9 @@ export const todos = (state = initialState, action) => {
   console.log({ type, payload });
   switch (type) {
     case CREATE_TODO: {
-      const { text } = payload;
-      const id = uuidv4();
+      const { text, id } = payload;
       const newTodo = {
-        id,
+        id: id || uuidv4(),
         text,
         isCompleted: false
       };
@@ -30,7 +29,6 @@ export const todos = (state = initialState, action) => {
     }
     case REMOVE_TODO: {
       const { id } = payload;
-      console.log("sss", id);
       return { ...state, data: state.data.filter(todo => todo.id !== id) };
     }
     case TOGGLE_TODO: {

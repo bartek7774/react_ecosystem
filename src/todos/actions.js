@@ -22,7 +22,7 @@ export const toggleTodo = id => ({
 
 export const LOAD_TODOS_IN_PROGRESS = "LOAD_TODOS_IN_PROGRESS";
 
-export const loadTodosInProgress = id => ({
+export const loadTodosInProgress = () => ({
   type: LOAD_TODOS_IN_PROGRESS
 });
 

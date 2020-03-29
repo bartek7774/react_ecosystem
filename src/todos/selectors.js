@@ -20,3 +20,5 @@ export const getCompletedTodos=createSelector(
   getTodos,
   todos=>todos.filter(todo=>todo.isCompleted),
 )
+
+// getCompletedTodos.resultFunc(fakeTodos)

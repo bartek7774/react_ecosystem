@@ -1,7 +1,25 @@
 import React from "react";
 import styled from 'styled-components';
 
+const TodoItemContainer = styled.div`
+    background: #fff;
+    border-radius: 8px;
+    margin-top: 8px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 4px 8px grey;
+`;
 
+export const getBorderStyleForDate = (startingDate, currentDate) =>
+    (startingDate > new Date(currentDate - 86400000 * 5)
+    ? 'none'
+    : '2px solid red');
+
+const TodoItemContainerWithWarning = styled(TodoItemContainer)`
+    border-bottom: ${props => (new Date(props.createdAt) > new Date(Date.now() - 8640000 * 5)
+        ? 'none'
+        : '6px solid red')};
+`;
 
 const DefaultButton = styled.button`
   width: 200px;
@@ -36,8 +54,10 @@ const Icon = styled.div`
   }
 `;
 
-const TodoListItem = ({ className, todo, onRemovePressed, onTogglePressed }) => (
-  <div className={className}>
+const TodoListItem = ({ todo, onRemovePressed, onTogglePressed }) =>{ 
+  const Container = todo.isCompleted ? TodoItemContainer : TodoItemContainerWithWarning;
+  return (
+    <Container createdAt={todo.createdAt}>
     <BodyText as='h1' text={todo.text} style={{textDecoration:todo.isCompleted?'line-through':''}}>{todo.text}</BodyText>
     <Link>{todo.id}    <Icon/></Link>
     <div className="buttons-container">
@@ -52,8 +72,8 @@ const TodoListItem = ({ className, todo, onRemovePressed, onTogglePressed }) => 
         Remove
       </FancyButton>
     </div>
-  </div>
-);
+  </Container>
+)};
 
 const TodoListItemStyled=styled(TodoListItem)`
   color: ${props=>!props.isCompleted?'red':'blue'}

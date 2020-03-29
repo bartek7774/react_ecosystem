@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
   loadTodosInProgress,
   loadTodosSuccess,
@@ -6,25 +7,33 @@ import {
   removeTodo
 } from "./actions";
 
-export const loadTodos = () => async (dispatch, getState) => {
+const API='https://jsonplaceholder.typicode.com';
+
+const fakeData=[
+  {
+    id: 1,
+    text: "1",
+    isCompleted: false,
+    createdAt: moment().subtract(7, 'days')
+  },
+  {
+    id: 2,
+    text: "2",
+    isCompleted: true,
+    createdAt: moment().subtract(1, 'days')
+  }
+]
+
+export const loadTodos = () => async dispatch => {
   try {
     dispatch(loadTodosInProgress());
-    setTimeout(() => {
-      dispatch(
-        loadTodosSuccess([
-          {
-            id: 1,
-            text: "1",
-            isCompleted: false
-          },
-          {
-            id: 2,
-            text: "2",
-            isCompleted: true
-          }
-        ])
-      );
-    }, 1000);
+    const data=await fetch(`${API}/todos`).then(res=>res.json());
+    console.log(data)
+    dispatch(
+      loadTodosSuccess(fakeData)
+    );
+    // setTimeout(() => {
+    // }, 1000);
   } catch (err) {
     dispatch(loadTodosError({ message: "Bład" }));
   }
